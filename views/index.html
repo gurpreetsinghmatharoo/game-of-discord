@@ -1,0 +1,91 @@
+<!-- This is a static file -->
+<!-- served from your routes in server.js -->
+
+<!-- You might want to try something fancier: -->
+<!-- html/nunjucks docs: https://mozilla.github.io/nunjucks/ -->
+<!-- pug: https://pugjs.org/ -->
+<!-- haml: http://haml.info/ -->
+<!-- hbs(handlebars): http://handlebarsjs.com/ -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Game of Discord</title>
+    <meta name="description" content="A Discord Game... Thing">
+    <link id="favicon" rel="icon" href="https://ya-webdesign.com/images/discord-png-icon-1.png" type="image/x-icon">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- import the webpage's stylesheet -->
+    <link rel="stylesheet" href="/style.css">
+    <style>
+      .c_title {
+        font-weight: bold;
+        font-size: 24px;
+      }
+      
+      #i_game {
+        border: 1px solid #A8A8A8;
+      }
+      
+      #Test
+      {
+          position: absolute;
+          visibility: hidden;
+          height: auto;
+          width: auto;
+          white-space: nowrap;
+      }
+    </style>
+    
+    <!-- import the webpage's client-side javascript file -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/data.json"></script>
+    <script src="/client.js" defer></script>
+  </head>
+  <body>
+    <p>
+      WARNING: This app is currently in development and will have a lot of bugs.
+	  <br><br><b>This app is not affiliated with Discord. This project was created just as a learning experience for me.</b>
+    </p>
+	
+	<br><hr>
+    
+    <header>
+      <h1>
+        Game of Discord
+      </h1>
+	  <p><i> Version: Season 1 Episode 1 </i></p>
+    </header>
+	
+	<hr><br>
+    
+    <a href="https://discordapp.com/oauth2/authorize?&client_id=542663019482841101&scope=bot&permissions=0">
+      <button id="i_invite">Invite Bot</button>
+    </a>
+    <p>
+      <i>
+        Make sure the bot has access to the channel you want to stream
+      </i>
+    </p>
+    
+    <main>
+      <p class="c_title">
+         Channel ID:
+      </p>
+      
+      <form>
+        <input id="i_channel" name="channel" value="297415260770533376" type="text" maxlength="100" placeholder="Channel ID" aria-labelledby="submit-channel">
+        <button type="submit" id="submit-channel">Start Stream</button>
+      </form>
+    </main>
+    
+    <canvas id="i_game" width="800" height="600"></canvas>
+    
+    <div id="Test">
+      abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
+    </div>
+  </body>
+</html>
+
