@@ -5,7 +5,7 @@ Haven't even been a day since I started this project, so there's still a lot to 
 To-do List:
 ------------
 
-**App*
+**App**
 
 * Implement socket.io
 * Move to a separate host
