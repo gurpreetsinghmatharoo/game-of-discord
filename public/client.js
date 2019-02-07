@@ -18,6 +18,10 @@ if (channel.length > 1) {
   console.log("Channel loaded: " + channel);
   
   gameStart = true;
+  
+  //Update text box
+  let tb = document.getElementById("i_channel");
+  tb.value = channel;
 }
 
 //Message ID
@@ -69,7 +73,7 @@ if (gameStart) {
     sprites.playerSize = 128;
     
     //Text
-    createText(8, 8, "Stream started!", 120);
+    createText(8, 32, "Stream started!", 120);
   }
   
   Create();
@@ -239,7 +243,6 @@ if (gameStart) {
     
     context.fillStyle = "#CACACA";
     context.font = fontSize + "px Helvetica";
-    context.textBaseline = "top";
     players[plr].drawnMessage = context.fillText(name, players[plr].x - w/2, players[plr].y + 64);
   }
   

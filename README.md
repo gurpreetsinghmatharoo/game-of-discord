@@ -1,6 +1,11 @@
 # Game of Discord
+------------
 
 Haven't even been a day since I started this project, so there's still a lot to be done. Follow me on [Twitter](https://twitter.com/itsmatharoo) to catch all updates. You can also tweet suggestions at me.
+
+Why is this an Evanescence bot?
+------------
+Just um, wanted to test this thing so did it in this bot. Will move it to a separate bot later.
 
 To-do List:
 ------------
