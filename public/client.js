@@ -4,10 +4,6 @@
 //Interface
 let btn = document.getElementById("submit-channel");
 
-btn.onclick = function() {
-  console.log("You clicked!");
-}
-
 //Get channel in URL
 let channel = window.location.search;
 var gameStart = false;
