@@ -1,5 +1,7 @@
 # [Game of Discord](http://discord.matharoo.net/)
 
+![](https://s2.gifyu.com/images/ezgif.com-video-to-gif-223e0c9e8f6add519.gif)
+
 Haven't even been a day since I started this project, so there's still a lot to be done. Follow me on [Twitter](https://twitter.com/itsmatharoo) to catch all updates. You can also tweet suggestions at me.
 
 To-do List:
@@ -14,12 +16,15 @@ To-do List:
 
 * Text speech bubbles
     * Text typewriter animation
+* Typing status
+* Click and see what they are playing
 
 **Graphics**
 
 * Update CSS
 * New sprites
     * Talking animation
+* Entering animation
 
 **Maybe List**
 

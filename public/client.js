@@ -59,14 +59,29 @@ if (gameStart) {
   
   //Drawing
   let plrMargin = 140;
-  let msgWidth = 120;
+  let msgWidth = 80;
   let fontSize = 14;
+
+  //Dialogues
+  let textSpeed = 1;
   
   //Create
   function Create() {
     //Load Images
-    sprites.player = "https://cdn.glitch.com/3754e1f5-8ef3-4c72-8d6d-a828ac24f7a9%2FPlayer_.png?1549442303646";
+    sprites.idle = "sprites/character/idle/idle_";
     sprites.playerSize = 128;
+    sprites.playerFrames = 30;
+    sprites.playerSpeed = 1;
+
+    //Idle
+    sprites.playerIdle = [];
+
+    for(let i=0; i<sprites.playerFrames; i++) {
+      let img = new Image();
+      img.src = sprites.idle + zeroes(i, 3) + ".png";
+
+      sprites.playerIdle.push(img);
+    }
     
     //Text
     createText(8, 32, "Stream started!", 120);
@@ -102,7 +117,8 @@ if (gameStart) {
           "author" : author,
           "x" : _x,
           "y" : _y,
-          "message" : messageObj.message
+          "message" : messageObj.message,
+          "char" : 0
         });
         
         log("New player added");
@@ -113,7 +129,7 @@ if (gameStart) {
       
       //Draw message
       players[plr].message = messageObj.message;
-      //drawMessage(plr);
+      players[plr].char = 0;
       
       //Disable
       newMessage = false;
@@ -144,17 +160,24 @@ if (gameStart) {
     for(let i=0; i<players.length; i++) {
       //Image
       if (!players[i].image) {
-        let img = new Image();
+        let imgs = sprites.playerIdle;
 
-        img.onload = function() {
+        /*img.onload = function() {
           drawPlayer(i);
-        }
+        }*/
         
-        players[i].image = img;
-        img.src = sprites.player;
+        players[i].image = imgs;
+        players[i].subimg = 0;
       }
       else {
         drawPlayer(i);
+
+        //Animation
+        players[i].subimg += sprites.playerSpeed;
+
+        if (players[i].subimg >= players[i].image.length) {
+          players[i].subimg -= players[i].image.length;
+        }
       }
       
       drawMessage(i);
@@ -186,12 +209,17 @@ if (gameStart) {
   //Functions
   //Draw player
   function drawPlayer(plr) {
-    let facing = Math.sign(canvas.width/2 - players[plr].x);
+    let facing = -Math.sign(canvas.width/2 - players[plr].x);
     if (facing==0) facing = 1;
+
+    players[plr].facing = facing;
+
+    let img = players[plr].image;
+    let sub = players[plr].subimg;
 
     context.save();
     context.scale(facing, 1);
-    context.drawImage(players[plr].image, (players[plr].x - sprites.playerSize/2) * facing, players[plr].y - sprites.playerSize/2, sprites.playerSize * facing, sprites.playerSize);
+    context.drawImage(img[sub], (players[plr].x - sprites.playerSize/2) * facing, players[plr].y - sprites.playerSize/2, sprites.playerSize * facing, sprites.playerSize);
     context.restore();
   }
   
@@ -200,37 +228,85 @@ if (gameStart) {
     let msg = players[plr].message;
     
     //Height
-    let height = 64;
+    let height = 90;
     let lh = 18;
+    
+    //Line breaks
+    let count = (msg.match(/\n/g) || []).length;
+
+    height += lh * count;
     
     //Long sentences
     let arr = msg.split(" ");
-    for(let i=0; i<arr.length; i++) {
+    /*for(let i=0; i<arr.length; i++) {
       if (i % 4 == 0 && i > 0) {
         arr.splice(i, 0, "\n");
         
         height += lh;
       }
     }
-    msg = arr.join(" ");
+    msg = arr.join(" ");*/
+
+    msg = "";
+    let wid = 0;
+
+    for(let i=0; i<arr.length; i++) {
+      //Add message
+      let add = arr[i];
+      if (i < arr.length-1) add += " ";
+
+      msg += add;
+
+      //Add width
+      wid += textWidth(add);
+
+      if (wid > msgWidth) {
+        msg += "\n";
+
+        wid = 0;
+        height += lh;
+      }
+    }
+
+    //Split by line breaks
     let msgs = msg.split("\n");
     
-    //console.log("Text width: " + textWidth(msg));
-    
-    //Text
-    //context.fillStyle = "#FEFEFE";
-    //context.font = fontSize + "px Helvetica";
-    //players[plr].drawnMessage = context.fillText(msg, players[plr].x - msgWidth/2, players[plr].y - height);
-    
+    //Draw
+    let char_prev = 0;
+
     for(let l=0; l<msgs.length; l++) {
-      msgs[l] = msgs[l].trim();
+      //msgs[l] = msgs[l].trim();
+      let _msg = msgs[l];
+
+      //Char
+      let end_here = false;
+      let char_this = players[plr].char - char_prev;
+
+      if (char_this < _msg.length) {
+        end_here = true;
+
+        _msg = _msg.substr(0, char_this);
+      }
+      //Offset X
+      let xoff = 0;
+      if (players[plr].facing < 0) {
+        xoff = -6;
+      }
+
+      //Width
       let w = textWidth(msgs[l]);
       
       context.fillStyle = "#FEFEFE";
       context.font = fontSize + "px Helvetica";
-      players[plr].drawnMessage = context.fillText(msgs[l], players[plr].x - w/2, players[plr].y - height);
+      players[plr].drawnMessage = context.fillText(_msg, (players[plr].x - w/2) + xoff, players[plr].y - height);
       
       height -= lh;
+
+      //End
+      if (end_here) break;
+      else {
+        char_prev += _msg.length;
+      }
     }
     
     //Draw name
@@ -240,6 +316,9 @@ if (gameStart) {
     context.fillStyle = "#CACACA";
     context.font = fontSize + "px Helvetica";
     players[plr].drawnMessage = context.fillText(name, players[plr].x - w/2, players[plr].y + 64);
+
+    //Char
+    if (players[plr].char < msg.length) players[plr].char += textSpeed;
   }
   
   //Get text width
@@ -306,4 +385,15 @@ function distance(x1, y1, x2, y2) {
   let c = Math.sqrt( a*a + b*b );
   
   return c;
+}
+
+//Zero padding
+function zeroes(number, digits) {
+  number = number.toString();
+
+  while (number.length < digits) {
+    number = "0" + number;
+  }
+
+  return number;
 }
