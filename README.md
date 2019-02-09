@@ -6,6 +6,7 @@ Follow me on [Twitter](https://twitter.com/itsmatharoo) to catch all updates. Yo
 
 To-do List:
 ------------
+*~~Strikethrough~~ = Task done*
 
 **App**
 
@@ -15,7 +16,7 @@ To-do List:
 **Talking**
 
 * Text speech bubbles
-    * Text typewriter animation
+    * ~~Text typewriter animation~~
 * Typing status
 * Click and see what they are playing
 
