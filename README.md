@@ -16,6 +16,7 @@ To-do List:
 **Talking**
 
 * Text speech bubbles
+    * **Text speech bubble is broken**
     * ~~Text typewriter animation~~
 * Typing status
 * Click and see what they are playing

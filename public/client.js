@@ -73,6 +73,25 @@ if (gameStart) {
     sprites.playerFrames = 30;
     sprites.playerSpeed = 1;
 
+    //Msg
+    sprites.msg = new Image();
+    sprites.msg.src = "sprites/UI/msg.png";
+    sprites.msgData = {loaded: false};
+
+    sprites.msg.onload = function() {
+      sprites.msgData.loaded = true;
+      sprites.msgData.cellSize = sprites.msg.width/3;
+    }
+
+    //Arrow
+    sprites.arrow = new Image();
+    sprites.arrow.src = "sprites/UI/arrow.png";
+    sprites.arrowData = {loaded: false};
+
+    sprites.arrow.onload = function() {
+      sprites.arrowData.loaded = true;
+    }
+
     //Idle
     sprites.playerIdle = [];
 
@@ -230,6 +249,7 @@ if (gameStart) {
     //Height
     let height = 90;
     let lh = 18;
+    let heightOrg = height;
     
     //Line breaks
     let count = (msg.match(/\n/g) || []).length;
@@ -270,8 +290,54 @@ if (gameStart) {
 
     //Split by line breaks
     let msgs = msg.split("\n");
+
+    //Draw box
+    if (sprites.msgData.loaded) {
+      let _w = 0;
+
+      //Get longest line
+      for (let l=0; l<msgs.length; l++) {
+        let msg_w = textWidth(msgs[l]);
+
+        if (msg_w > _w) _w = msg_w;
+      }
+
+      //Coordinates and sizes
+      let x1 = players[plr].x - _w/2;
+      let x2 = players[plr].x + _w/2;
+      let y1 = players[plr].y - height - lh;
+      let y2 = players[plr].y - heightOrg + lh;
+
+      let cs = sprites.msgData.cellSize;
+
+      //Offset
+      x1 -= cs/2;
+      x2 -= cs/2;
+
+      let _h = y2 - y1;
+
+      //Draw
+      context.drawImage(sprites.msg, 0, 0, cs, cs, x1, y1, cs, cs); // Top-left
+      context.drawImage(sprites.msg, cs*2, 0, cs, cs, x2-cs, y1, cs, cs); // Top-right
+      context.drawImage(sprites.msg, cs*2, cs*2, cs, cs, x2-cs, y2-cs, cs, cs); // Bottom-right
+      context.drawImage(sprites.msg, 0, cs*2, cs, cs, x1, y2-cs, cs, cs); // Bottom-left
+
+      context.drawImage(sprites.msg, cs, 0, cs, cs, x1+cs, y1, _w - cs*2, cs); // Top
+      context.drawImage(sprites.msg, cs, cs*2, cs, cs, x1+cs, y2-cs, _w - cs*2, cs); // Bottom
+      context.drawImage(sprites.msg, 0, cs, cs, cs, x1, y1+cs, cs, _h - cs*2); // Left
+      context.drawImage(sprites.msg, cs*2, cs, cs, cs, x2-cs, y1+cs, cs, _h - cs*2); // Right
+      
+      context.drawImage(sprites.msg, cs, cs, cs, cs, x1+cs, y1+cs, _w - cs*2, _h - cs*2); // Center
+
+      //Arrow
+      if (sprites.arrowData.loaded) {
+        _w -= cs*2;
+
+        context.drawImage(sprites.arrow, (x1+_w/2) + 8, y2);
+      }
+    }
     
-    //Draw
+    //Draw message
     let char_prev = 0;
 
     for(let l=0; l<msgs.length; l++) {
