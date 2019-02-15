@@ -258,14 +258,6 @@ if (gameStart) {
     
     //Long sentences
     let arr = msg.split(" ");
-    /*for(let i=0; i<arr.length; i++) {
-      if (i % 4 == 0 && i > 0) {
-        arr.splice(i, 0, "\n");
-        
-        height += lh;
-      }
-    }
-    msg = arr.join(" ");*/
 
     msg = "";
     let wid = 0;
@@ -286,6 +278,11 @@ if (gameStart) {
         wid = 0;
         height += lh;
       }
+
+      //Reset
+      else if (msg.indexOf("\n") >= 0) {
+        //wid = 0;
+      }
     }
 
     //Split by line breaks
@@ -293,11 +290,11 @@ if (gameStart) {
 
     //Draw box
     if (sprites.msgData.loaded) {
-      let _w = 0;
+      let _w = 64;
 
       //Get longest line
       for (let l=0; l<msgs.length; l++) {
-        let msg_w = textWidth(msgs[l]);
+        let msg_w = textWidth(msgs[l]) + 12;
 
         if (msg_w > _w) _w = msg_w;
       }
@@ -313,8 +310,20 @@ if (gameStart) {
       //Offset
       x1 -= cs/2;
       x2 -= cs/2;
+      x1 += 6;
 
       let _h = y2 - y1;
+      
+      //Offset X
+      if (players[plr].facing < 0) {
+        x1 -= 3;
+      }
+      else {
+        x1 += 3;
+        x2 += 3;
+      }
+
+      _w = x2 - x1;
 
       //Draw
       context.drawImage(sprites.msg, 0, 0, cs, cs, x1, y1, cs, cs); // Top-left
@@ -353,6 +362,7 @@ if (gameStart) {
 
         _msg = _msg.substr(0, char_this);
       }
+
       //Offset X
       let xoff = 0;
       if (players[plr].facing < 0) {
@@ -391,9 +401,10 @@ if (gameStart) {
   function textWidth(str) {
     let test = document.getElementById("Test");
     test.style.fontSize = fontSize;
+    test.style.font = "Helvetica";
     test.innerHTML = str;
     
-    return test.clientWidth - 12;
+    return test.clientWidth > 20 ? test.clientWidth - 12 : test.clientWidth;
   }
   
   //Nearest distance
