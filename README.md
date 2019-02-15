@@ -29,6 +29,7 @@ To-do List:
 
 **Maybe List**
 
+* Maybe, the ability to send messages from the app (through the bot, of course)
 * Maybe, a room shows chats for all channels instead of one channel, where people in the same channel are grouped together
 * Maybe, it shows all the chats from all the servers that the bot is in
 * Maybe, the ability to edit user sprites and save them
